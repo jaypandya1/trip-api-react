@@ -3,15 +3,17 @@ import  './TripList.css'
 
 function TripList() {
   const [trips, setTrips] = useState([]);
+  const [url,setUrl] = useState('http://localhost:3000/trips');
 
-
-
+  const FetchTrips = async ( ) => {
+      const response = await fetch(url)
+      const json = await response.json()
+      setTrips(json)
+  }
 
   useEffect(() => {
-    fetch("http://localhost:3000/trips")
-      .then((response) => response.json())
-      .then((trip) => setTrips(trip));
-  }, []);
+   FetchTrips()
+  }, [trips,FetchTrips]);
 
   return (
     <div className="TripList">
@@ -24,6 +26,11 @@ function TripList() {
           </li>
         ))}
       </ul>
+
+      <div className="filters">
+          <button onClick={() => setUrl('http://localhost:3000/trips?loc=europe')}>Europian Trips</button>
+          <button onClick={() => setUrl('http://localhost:3000/trips')}>All Trips</button>
+      </div>
     </div>
   );
 }
